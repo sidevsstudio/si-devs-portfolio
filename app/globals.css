@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand tokens */
+  --color-obsidian: var(--obsidian);
+  --color-chalk: var(--chalk);
+  --color-linen: var(--linen);
+  --color-ember: var(--ember);
+  --color-horizon: var(--horizon);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Raw brand palette */
+  --obsidian: #15130f;
+  --chalk: #f3f1ec;
+  --linen: #e7e1d5;
+  --ember: #f15025;
+  --horizon: #7494ea;
+
+  --radius: 0.75rem;
+
+  /* Semantic mapping — light (Chalk) surface */
+  --background: #f3f1ec;
+  --foreground: #15130f;
+  --card: #fbfaf6;
+  --card-foreground: #15130f;
+  --popover: #fbfaf6;
+  --popover-foreground: #15130f;
+  --primary: #f15025;
+  --primary-foreground: #f3f1ec;
+  --secondary: #e7e1d5;
+  --secondary-foreground: #15130f;
+  --muted: #e7e1d5;
+  --muted-foreground: #6b6459;
+  --accent: #f15025;
+  --accent-foreground: #f3f1ec;
+  --destructive: #b3341a;
+  --border: #e7e1d5;
+  --input: #ddd6c8;
+  --ring: #f15025;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  ::selection {
+    background-color: var(--ember);
+    color: var(--chalk);
+  }
+}
+
+@layer utilities {
+  /* Scroll reveal: elements start slightly lowered + faded, ease into place */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Load-in entrance for above-the-fold content (no JS/observer needed) */
+  @keyframes enter-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-enter {
+    opacity: 0;
+    animation: enter-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .animate-enter {
+      opacity: 1;
+      animation: none;
+    }
+  }
+}
+
+@layer utilities {
+  /* Obsidian surface: dark section that flips accent to Horizon per brand rules */
+  .surface-obsidian {
+    --background: #15130f;
+    --foreground: #f3f1ec;
+    --card: #1e1b16;
+    --card-foreground: #f3f1ec;
+    --primary: #7494ea;
+    --primary-foreground: #15130f;
+    --secondary: #262119;
+    --secondary-foreground: #f3f1ec;
+    --muted: #262119;
+    --muted-foreground: #a8a093;
+    --accent: #7494ea;
+    --accent-foreground: #15130f;
+    --border: #302a20;
+    --input: #302a20;
+    --ring: #7494ea;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
