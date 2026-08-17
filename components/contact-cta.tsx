@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Script from 'next/script'
 import { ArrowUpRight, CalendarCheck, MessageCircle, FormInput } from 'lucide-react'
 import { Reveal } from '@/components/reveal'
 
@@ -31,7 +32,7 @@ const CHANNELS = [
  * In Tally: Share > Embed > copy the ID from the embed URL
  * (e.g. https://tally.so/embed/wABC12 -> the ID is "wABC12").
  */
-const TALLY_FORM_ID = 'TALLY_FORM_ID'
+const TALLY_FORM_ID = 'b5RBX0'
 const IS_FORM_CONFIGURED = TALLY_FORM_ID !== 'TALLY_FORM_ID'
 
 declare global {
@@ -42,32 +43,16 @@ declare global {
 
 export function ContactCta() {
   useEffect(() => {
-    if (!IS_FORM_CONFIGURED) return
-
-    const SRC = 'https://tally.so/widgets/embed.js'
-
-    const load = () => {
-      if (window.Tally) {
-        window.Tally.loadEmbeds()
-        return
-      }
+    if (IS_FORM_CONFIGURED && window.Tally) {
+      window.Tally.loadEmbeds()
     }
-
-    const existing = document.querySelector<HTMLScriptElement>(`script[src="${SRC}"]`)
-    if (existing) {
-      load()
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = SRC
-    script.async = true
-    script.onload = load
-    document.body.appendChild(script)
   }, [])
 
   return (
     <section id="contact" className="surface-obsidian scroll-mt-20 py-20 md:py-28">
+      {IS_FORM_CONFIGURED && (
+        <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" />
+      )}
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -94,12 +79,14 @@ export function ContactCta() {
               <div className="mt-6">
                 {IS_FORM_CONFIGURED ? (
                   <iframe
-                    data-tally-src={`https://tally.so/embed/${TALLY_FORM_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`}
+                    data-tally-src={`https://tally.so/embed/${TALLY_FORM_ID}?alignLeft=1&hideTitle=1&dynamicHeight=1`}
                     loading="lazy"
                     width="100%"
                     height="420"
+                    frameBorder={0}
                     title="SI Devs project enquiry form"
-                    className="w-full"
+                    className="w-full border-none"
+                    id={`tally-${TALLY_FORM_ID}`}
                   />
                 ) : (
                   /* Placeholder shown until TALLY_FORM_ID is set. Replace the ID above to go live. */
