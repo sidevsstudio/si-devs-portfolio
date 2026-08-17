@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Fraunces, Plus_Jakarta_Sans } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const fraunces = Fraunces({
@@ -73,9 +74,13 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${jakarta.variable} bg-background`}
     >
+      <head>
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+      </head>
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="afterInteractive" />
       </body>
     </html>
   )

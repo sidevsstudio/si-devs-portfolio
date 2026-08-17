@@ -16,7 +16,15 @@ const CHANNELS = [
     title: 'Book a discovery call',
     description: 'A relaxed, no-pressure chat about your goals and whether we\u2019re a good fit.',
     action: 'Choose a time',
-    href: '#', // TODO: replace with your Calendly link
+    href: '#',
+    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault()
+      if (typeof window !== 'undefined' && window.Calendly) {
+        window.Calendly.initPopupWidget({
+          url: 'https://calendly.com/connect-sidevs/30min?background_color=1e1b16&text_color=f3f1ec&primary_color=7494ea'
+        })
+      }
+    }
   },
   {
     icon: MessageCircle,
@@ -38,6 +46,7 @@ const IS_FORM_CONFIGURED = TALLY_FORM_ID !== 'TALLY_FORM_ID'
 declare global {
   interface Window {
     Tally?: { loadEmbeds: () => void }
+    Calendly?: { initPopupWidget: (options: { url: string }) => void }
   }
 }
 
@@ -116,6 +125,7 @@ export function ContactCta() {
               <Reveal key={channel.title} delay={i * 90}>
                 <a
                   href={channel.href}
+                  onClick={channel.onClick}
                   className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-black/20"
                 >
                   <div className="flex size-11 items-center justify-center rounded-xl bg-secondary text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
