@@ -25,7 +25,7 @@ const CHANNELS = [
       e.preventDefault()
       if (typeof window !== 'undefined' && window.Calendly) {
         window.Calendly.initPopupWidget({
-          url: 'https://calendly.com/connect-sidevs/30min?background_color=1e1b16&text_color=f3f1ec&primary_color=7494ea'
+          url: 'https://calendly.com/connect-sidevs/30min?background_color=f3f1ec&text_color=15130f&primary_color=7494ea'
         })
       }
     }
