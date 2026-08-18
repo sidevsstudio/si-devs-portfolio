@@ -1,4 +1,5 @@
 import { Logo } from '@/components/logo'
+import { WHATSAPP_URL } from '@/lib/constants'
 
 const NAV = {
   Studio: [
@@ -12,7 +13,7 @@ const NAV = {
     { label: 'Instagram', href: '#' },
     { label: 'LinkedIn', href: '#' },
     { label: 'X (Twitter)', href: '#' },
-    { label: 'WhatsApp', href: '#' },
+    { label: 'WhatsApp', href: WHATSAPP_URL },
   ],
 }
 
@@ -41,6 +42,8 @@ export function SiteFooter() {
                   <li key={link.label}>
                     <a
                       href={link.href}
+                      target={link.href.startsWith('http') ? '_blank' : undefined}
+                      rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {link.label}

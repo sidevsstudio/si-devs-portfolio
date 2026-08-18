@@ -2,13 +2,15 @@
 
 import { useEffect } from 'react'
 import Script from 'next/script'
-import { ArrowUpRight, CalendarCheck, MessageCircle, FormInput } from 'lucide-react'
+import { ArrowUpRight, CalendarCheck, FormInput } from 'lucide-react'
 import { Reveal } from '@/components/reveal'
+import { WhatsAppIcon } from '@/components/whatsapp-icon'
+import { WHATSAPP_URL } from '@/lib/constants'
 
 /**
- * QUICK CONTACT LINKS — replace the href placeholders below with your real details:
- *  - Calendly (or Google Calendar) booking link
- *  - WhatsApp: https://wa.me/<your-number-in-international-format>
+ * QUICK CONTACT LINKS:
+ *  - Calendly booking popup
+ *  - WhatsApp deep link configured in lib/constants.ts
  */
 const CHANNELS = [
   {
@@ -17,6 +19,8 @@ const CHANNELS = [
     description: 'A relaxed, no-pressure chat about your goals and whether we\u2019re a good fit.',
     action: 'Choose a time',
     href: '#',
+    target: undefined,
+    rel: undefined,
     onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault()
       if (typeof window !== 'undefined' && window.Calendly) {
@@ -27,11 +31,13 @@ const CHANNELS = [
     }
   },
   {
-    icon: MessageCircle,
+    icon: WhatsAppIcon,
     title: 'Message on WhatsApp',
     description: 'Prefer to type? Send a quick message and we\u2019ll reply thoughtfully.',
     action: 'Open WhatsApp',
-    href: '#', // TODO: replace with https://wa.me/<number>
+    href: WHATSAPP_URL,
+    target: '_blank',
+    rel: 'noopener noreferrer',
   },
 ]
 
@@ -40,7 +46,7 @@ const CHANNELS = [
  * In Tally: Share > Embed > copy the ID from the embed URL
  * (e.g. https://tally.so/embed/wABC12 -> the ID is "wABC12").
  */
-const TALLY_FORM_ID = 'b5RBX0'
+const TALLY_FORM_ID: string = 'b5RBX0'
 const IS_FORM_CONFIGURED = TALLY_FORM_ID !== 'TALLY_FORM_ID'
 
 declare global {
@@ -126,6 +132,8 @@ export function ContactCta() {
                 <a
                   href={channel.href}
                   onClick={channel.onClick}
+                  target={channel.target}
+                  rel={channel.rel}
                   className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-black/20"
                 >
                   <div className="flex size-11 items-center justify-center rounded-xl bg-secondary text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
